@@ -38,10 +38,8 @@ export default async function handler(req, res) {
     data = { berichten: [], wezen: [], bronStatus: { berichten: "fout", activiteit: "fout" } };
   }
 
-  const swr = \`public, s-maxage=\${MAX_AGE_S}, stale-while-revalidate=\${SWR_S}\`;
-  res.setHeader("Cache-Control", \`public, max-age=60, s-maxage=\${MAX_AGE_S}, stale-while-revalidate=\${SWR_S}\`);
-  res.setHeader("CDN-Cache-Control", swr);
-  res.setHeader("Vercel-CDN-Cache-Control", swr);
+    const swr = "public, s-maxage=" + MAX_AGE_S + ", stale-while-revalidate=" + SWR_S;
+  res.setHeader("Cache-Control", "public, max-age=60, s-maxage=" + MAX_AGE_S + ", stale-while-revalidate=" + SWR_S);
 
   res.status(200).json({ bijgewerkt: new Date().toISOString(), ...data });
 }

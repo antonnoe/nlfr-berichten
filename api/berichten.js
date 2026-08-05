@@ -32,14 +32,16 @@ export default async function handler(req, res) {
 
   let data;
   try {
-    data = await haalBerichten();
+    data = await haalBerichten({ debug: req.query && req.query.debug === "1" });
   } catch (e) {
     // Nooit een harde fout naar de client: de pagina moet blijven staan.
     data = { berichten: [], wezen: [], bronStatus: { berichten: "fout", activiteit: "fout" } };
   }
 
-    const swr = "public, s-maxage=" + MAX_AGE_S + ", stale-while-revalidate=" + SWR_S;
-  res.setHeader("Cache-Control", "public, max-age=60, s-maxage=" + MAX_AGE_S + ", stale-while-revalidate=" + SWR_S);
+  const swr = \`public, s-maxage=\${MAX_AGE_S}, stale-while-revalidate=\${SWR_S}\`;
+  res.setHeader("Cache-Control", \`public, max-age=60, s-maxage=\${MAX_AGE_S}, stale-while-revalidate=\${SWR_S}\`);
+  res.setHeader("CDN-Cache-Control", swr);
+  res.setHeader("Vercel-CDN-Cache-Control", swr);
 
   res.status(200).json({ bijgewerkt: new Date().toISOString(), ...data });
 }

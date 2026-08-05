@@ -19,7 +19,8 @@ const TOEGESTAAN = [
 
 function cors(req, res) {
   const o = req.headers.origin;
-  if (o && (TOEGESTAAN.includes(o) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(o))) {
+    if (o && (TOEGESTAAN.includes(o) || /^https:\/\/[a-z0-9-]+\.(vercel\.app|claudeusercontent\.com)$/i.test(o))) {
+
     res.setHeader("Access-Control-Allow-Origin", o);
     res.setHeader("Vary", "Origin");
   }

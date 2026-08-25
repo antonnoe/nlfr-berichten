@@ -4,29 +4,12 @@
 // Wordt pas aangeroepen als de bezoeker een bericht openklapt.
 
 import { haalDraad } from "../lib/draad.js";
+import { cors } from "../lib/cors.js";
 
 const MAX_AGE_S = 300;
 const SWR_S = 1800;
 
-const TOEGESTAAN = [
-  "https://www.nederlanders.fr",
-  "https://nederlanders.fr",
-  "https://cafeclaude.fr",
-  "https://www.cafeclaude.fr",
-  "https://infofrankrijk.com",
-  "https://www.infofrankrijk.com",
-  "https://nedergids.nl",
-  "https://www.nedergids.nl",
-];
 
-function cors(req, res) {
-  const o = req.headers.origin;
-  if (o && (TOEGESTAAN.includes(o) || /^https:\/\/[a-z0-9-]+\.(vercel\.app|claudeusercontent\.com)$/i.test(o))) {
-    res.setHeader("Access-Control-Allow-Origin", o);
-    res.setHeader("Vary", "Origin");
-  }
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-}
 
 export default async function handler(req, res) {
   cors(req, res);

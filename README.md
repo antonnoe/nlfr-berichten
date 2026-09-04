@@ -44,6 +44,28 @@ levendige draadjes bovenaan komen.
 | Berichten | \`https://www.nederlanders.fr/profiles/blog/feed?xn_auth=no\` |
 | Activiteit | \`https://www.nederlanders.fr/activity/log/list?fmt=rss\` |
 
+## Wat er NIET in de reactietekst komt
+
+De reactietekst is de node `div.xg_user_generated` binnen het `<dd>` van het
+reactieblok, met de `<div>`'s meegeteld — niet alles tot het laatste
+`</div>`. Wat daarnaast of daarbinnen aan NING-interface staat wordt
+weggeknipt door `lib/schoon.js`, in twee lagen:
+
+1. **Als node.** Geneste kopregels (`<dt>Reactie van … <tijd></dt>`),
+   `<button>`'s en actielinks, herkend aan hun class (`delete_link`,
+   `edit_link`, `reply_link`, `flag_link`, …), hun `title` of hun linktekst.
+2. **Als regel, het vangnet.** Wat er plat doorheen komt — een andere skin, een
+   andere taal, een platgeslagen kopie — valt af tegen een denylist met de
+   knoplabels ("Reactie wissen", "Bewerken", "Beantwoorden", "Verwijderen",
+   "Melden", "Reageren", "Delete Comment", "Edit", "Reply", …). Auteur en tijd
+   gaan als eigen velden mee en worden ook uit de tekst gehouden.
+
+Dit is nodig omdat die HTML in de **opgeslagen reactie** kan zitten: een lezer
+die een gerenderd Ning-reactieblok kopieert en in zijn eigen reactie plakt,
+neemt de kopregel en de knop "Reactie wissen" gewoon mee. Het komt dus ook mee
+als je anoniem ophaalt — en dat doet deze API: geen cookies, geen sessie.
+`test/fixtures/ning-reactie.html` is zo'n echt geval.
+
 ## Hoe de koppeling werkt
 
 De activiteitenfeed bevat de reacties, maar zegt niet in machineleesbare vorm

@@ -88,6 +88,19 @@ Alleen activiteit die een reactie is wordt meegenomen (\`reageerde op\`,
 \`heeft gereageerd\`, \`commented on\`, …). Dubbele items worden ontdubbeld op
 \`commentId\`.
 
+## Foto's, HTML en reactie-paginering
+
+- Elk bericht heeft naast `samenvatting` ook `html` (veilige subset: p, br, em,
+  strong, lijsten, a, img) en `afbeeldingen` (`[{src, alt}]`). `/api/reacties`
+  geeft hetzelfde voor `bericht` en voor elke reactie. Afbeeldingen zijn altijd
+  https en absoluut, zonder width/height/style.
+- `/api/reacties` haalt alle reactiepagina's op (10 per pagina) via
+  `<slug>?id=<groep>:BlogPost:<id>&page=N`, parallel (max 5), met per pagina een
+  time-out en één herkansing. Lukt een pagina niet, dan blijft het resultaat
+  bruikbaar met `volledig: false`.
+- Tekstvelden worden met het pakket `entities` gedecodeerd (ook `No&euml`
+  zonder puntkomma).
+
 ## Caching
 
 CDN: 2 minuten vers, 10 minuten stale-while-revalidate. De feeds worden dus

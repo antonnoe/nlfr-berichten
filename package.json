@@ -6,6 +6,11 @@
   "scripts": {
     "test": "node --test test/*.test.mjs"
   },
-  "engines": { "node": ">=20" },
-  "dependencies": { "undici": "^6.21.0" }
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "entities": "^4.5.0",
+    "undici": "^6.21.0"
+  }
 }

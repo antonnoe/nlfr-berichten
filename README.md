@@ -136,3 +136,15 @@ ook voor niet-ingelogde bezoekers uit de nieuwsbrief.
 - Ning kan de feedopmaak wijzigen; het parsen is defensief, maar bij een
   wijziging in de activiteitenzinnen moeten \`REACTIE_PATRONEN\` en
   \`haalBerichtTitel\` in \`lib/ning.js\` bijgewerkt worden.
+
+## Foto's in `html`
+
+Elke afbeelding in het veld `html` (bericht en reactie) is een figuur:
+
+    <figure><a href="ORIGINEEL" target="_blank" rel="noopener"><img src alt loading="lazy"></a><figcaption>ONDERSCHRIFT</figcaption></figure>
+
+Het onderschrift is de eerstvolgende niet-lege alinea na de foto, als die volledig
+cursief of gecentreerd is en maximaal 300 tekens telt; die alinea valt dan uit de
+lopende tekst. Zonder onderschrift ontbreekt `figcaption`. `afbeeldingen` heeft per
+item ook `origineel` en `onderschrift` (string of null). Lege alinea's staan niet
+in `html`. Zie `figuren()` in `lib/schoon.js`.

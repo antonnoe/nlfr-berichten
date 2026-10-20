@@ -69,3 +69,18 @@ test("cors() zet geen Allow-Origin als er helemaal geen Origin is", () => {
   assert.equal(res.headers["Access-Control-Allow-Origin"], undefined);
   assert.equal(res.headers["Access-Control-Allow-Methods"], "GET, OPTIONS");
 });
+
+// Vary moet op elk antwoord staan, anders bewaart de CDN een antwoord zonder
+// Allow-Origin en levert het aan de eigen apps.
+import { cors as corsVary, origineToegestaan as okVary } from "../lib/cors.js";
+import { test as testVary } from "node:test";
+import assertVary from "node:assert/strict";
+testVary("Vary: Origin ook zonder of met vreemde Origin; infopoche.fr toegestaan", () => {
+  for (const origin of [undefined, "https://kwaadnederlanders.fr"]) {
+    const h = {};
+    corsVary({ headers: origin ? { origin } : {} }, { setHeader: (k, v) => { h[k.toLowerCase()] = v; } });
+    assertVary.equal(h.vary, "Origin");
+    assertVary.equal(h["access-control-allow-origin"], undefined);
+  }
+  assertVary.ok(okVary("https://infopoche.fr"));
+});
